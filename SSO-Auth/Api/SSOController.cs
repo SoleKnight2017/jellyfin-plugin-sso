@@ -311,6 +311,7 @@ public class SSOController : ControllerBase
             var oidEndpointUri = new Uri(config.OidEndpoint?.Trim());
             options.Policy.Discovery.AdditionalEndpointBaseAddresses.Add(oidEndpointUri.GetLeftPart(UriPartial.Authority));
             options.Policy.Discovery.ValidateEndpoints = !config.DoNotValidateEndpoints; // For Google and other providers with different endpoints
+            options.Policy.Discovery.RequireHttps = !config.DisableHttps;
             var oidcClient = new OidcClient(options);
             var state = await oidcClient.PrepareLoginAsync().ConfigureAwait(false);
             StateManager.Add(state.State, new TimedAuthorizeState(state, DateTime.Now));
